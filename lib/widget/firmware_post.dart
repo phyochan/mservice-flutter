@@ -58,20 +58,23 @@ List<dynamic> listItemsGetter(Response<BuiltFirmwares> firmwares) {
 
 Widget listItemBuilder(value, int index) {
   BuiltFirmware myFirmware = value as BuiltFirmware;
+
   return ListTile(
+      leading: Container(
+       width: 50,
+        child:Image.network("http://myanmarservice.org/storage/" + myFirmware.photo),
+
+      ),
 
       title: Container(
         padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: CachedNetworkImage(
-          imageUrl: "http://myanmarservice.org/storage/" + myFirmware.photo,
-          placeholder: (context, kTransparentImage) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+        child: Text(
+           myFirmware.name
+
         ),
-
-
       )
-
   );
+
 }
 
 Widget loadingWidgetMaker() {
