@@ -15,7 +15,7 @@ class _$ApiService extends ApiService {
   final definitionType = ApiService;
 
   Future<Response<BuiltFirmwares>> getFirmwares(int page) {
-    final $url = '/firmware/all';
+    final $url = '/get-firmware';
     final Map<String, dynamic> $params = {'page': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<BuiltFirmwares, BuiltFirmwares>($request);

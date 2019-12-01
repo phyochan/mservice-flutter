@@ -20,7 +20,7 @@ class _$BuiltFirmwaresSerializer
   Iterable<Object> serialize(Serializers serializers, BuiltFirmwares object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'firmwares',
+      'data',
       serializers.serialize(object.firmwares,
           specifiedType:
               const FullType(BuiltList, const [const FullType(BuiltFirmware)])),
@@ -43,7 +43,7 @@ class _$BuiltFirmwaresSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'firmwares':
+        case 'data':
           result.firmwares.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(BuiltFirmware)]))

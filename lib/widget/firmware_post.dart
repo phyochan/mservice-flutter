@@ -1,6 +1,7 @@
 import 'dart:io';
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:isp/model/built_firmware.dart';
 import 'package:isp/network/api_service.dart';
 import 'package:flutter/material.dart';
@@ -58,13 +59,18 @@ List<dynamic> listItemsGetter(Response<BuiltFirmwares> firmwares) {
 Widget listItemBuilder(value, int index) {
   BuiltFirmware myFirmware = value as BuiltFirmware;
   return ListTile(
-      leading: Text(index.toString()),
+
       title: Container(
-        padding: EdgeInsets.only(top: 60.0, bottom: 60.0),
-        child: Text(
-            myFirmware.name
+        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: CachedNetworkImage(
+          imageUrl: "http://myanmarservice.org/storage/" + myFirmware.photo,
+          placeholder: (context, kTransparentImage) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
+
+
       )
+
   );
 }
 
@@ -105,4 +111,5 @@ int totalPagesGetter(Response<BuiltFirmwares> firmwares) {
 bool pageErrorChecker(Response<BuiltFirmwares> firmwares) {
   return firmwares.statusCode != 200;
 }
+
 

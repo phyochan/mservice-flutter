@@ -10,7 +10,7 @@ part 'api_service.chopper.dart';
 abstract class ApiService extends ChopperService {
 
 
-  @Get(path: 'firmware/all')
+  @Get(path: 'get-firmware')
   Future<Response<BuiltFirmwares>> getFirmwares(@Query() int page);
 
   @override

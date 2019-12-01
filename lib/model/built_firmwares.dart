@@ -6,7 +6,7 @@ import 'package:built_value/serializer.dart';
 part 'built_firmwares.g.dart';
 
 abstract class BuiltFirmwares implements Built<BuiltFirmwares, BuiltFirmwaresBuilder> {
-
+  @BuiltValueField(wireName: 'data')
   BuiltList<BuiltFirmware> get firmwares;
   int get total;
 
