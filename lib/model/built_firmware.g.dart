@@ -26,8 +26,16 @@ class _$BuiltFirmwareSerializer implements StructuredSerializer<BuiltFirmware> {
       'photo',
       serializers.serialize(object.photo,
           specifiedType: const FullType(String)),
+      'brand',
+      serializers.serialize(object.brand,
+          specifiedType: const FullType(String)),
     ];
-
+    if (object.buildnumber != null) {
+      result
+        ..add('buildnumber')
+        ..add(serializers.serialize(object.buildnumber,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -55,6 +63,14 @@ class _$BuiltFirmwareSerializer implements StructuredSerializer<BuiltFirmware> {
           result.photo = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'buildnumber':
+          result.buildnumber = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'brand':
+          result.brand = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -69,11 +85,17 @@ class _$BuiltFirmware extends BuiltFirmware {
   final String name;
   @override
   final String photo;
+  @override
+  final String buildnumber;
+  @override
+  final String brand;
 
   factory _$BuiltFirmware([void Function(BuiltFirmwareBuilder) updates]) =>
       (new BuiltFirmwareBuilder()..update(updates)).build();
 
-  _$BuiltFirmware._({this.id, this.name, this.photo}) : super._() {
+  _$BuiltFirmware._(
+      {this.id, this.name, this.photo, this.buildnumber, this.brand})
+      : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('BuiltFirmware', 'id');
     }
@@ -82,6 +104,9 @@ class _$BuiltFirmware extends BuiltFirmware {
     }
     if (photo == null) {
       throw new BuiltValueNullFieldError('BuiltFirmware', 'photo');
+    }
+    if (brand == null) {
+      throw new BuiltValueNullFieldError('BuiltFirmware', 'brand');
     }
   }
 
@@ -98,12 +123,17 @@ class _$BuiltFirmware extends BuiltFirmware {
     return other is BuiltFirmware &&
         id == other.id &&
         name == other.name &&
-        photo == other.photo;
+        photo == other.photo &&
+        buildnumber == other.buildnumber &&
+        brand == other.brand;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, id.hashCode), name.hashCode), photo.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, id.hashCode), name.hashCode), photo.hashCode),
+            buildnumber.hashCode),
+        brand.hashCode));
   }
 
   @override
@@ -111,7 +141,9 @@ class _$BuiltFirmware extends BuiltFirmware {
     return (newBuiltValueToStringHelper('BuiltFirmware')
           ..add('id', id)
           ..add('name', name)
-          ..add('photo', photo))
+          ..add('photo', photo)
+          ..add('buildnumber', buildnumber)
+          ..add('brand', brand))
         .toString();
   }
 }
@@ -132,6 +164,14 @@ class BuiltFirmwareBuilder
   String get photo => _$this._photo;
   set photo(String photo) => _$this._photo = photo;
 
+  String _buildnumber;
+  String get buildnumber => _$this._buildnumber;
+  set buildnumber(String buildnumber) => _$this._buildnumber = buildnumber;
+
+  String _brand;
+  String get brand => _$this._brand;
+  set brand(String brand) => _$this._brand = brand;
+
   BuiltFirmwareBuilder();
 
   BuiltFirmwareBuilder get _$this {
@@ -139,6 +179,8 @@ class BuiltFirmwareBuilder
       _id = _$v.id;
       _name = _$v.name;
       _photo = _$v.photo;
+      _buildnumber = _$v.buildnumber;
+      _brand = _$v.brand;
       _$v = null;
     }
     return this;
@@ -159,8 +201,13 @@ class BuiltFirmwareBuilder
 
   @override
   _$BuiltFirmware build() {
-    final _$result =
-        _$v ?? new _$BuiltFirmware._(id: id, name: name, photo: photo);
+    final _$result = _$v ??
+        new _$BuiltFirmware._(
+            id: id,
+            name: name,
+            photo: photo,
+            buildnumber: buildnumber,
+            brand: brand);
     replace(_$result);
     return _$result;
   }

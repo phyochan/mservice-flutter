@@ -7,6 +7,10 @@ abstract class BuiltFirmware implements Built<BuiltFirmware, BuiltFirmwareBuilde
   int get id;
   String get name;
   String get photo;
+  @nullable
+  @BuiltValueField(wireName: 'buildnumber')
+  String get buildnumber;
+  String get brand;
 
   BuiltFirmware._();
 

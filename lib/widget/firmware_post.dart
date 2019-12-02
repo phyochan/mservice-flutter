@@ -31,7 +31,7 @@ class _FirmwareModelPageState extends State<FirmwareModelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data),
+        title: Text(widget.data + " Firmware"),
       ),
       body: Paginator.listView(
          key: pageGlobalKey,
@@ -58,24 +58,39 @@ List<dynamic> listItemsGetter(Response<BuiltFirmwares> firmwares) {
 
 Widget listItemBuilder(value, int index) {
   BuiltFirmware myFirmware = value as BuiltFirmware;
+  return Card(
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+  child: ListTile(
 
-  return ListTile(
-      leading: Container(
-       width: 50,
-        child:Image.network("http://myanmarservice.org/storage/" + myFirmware.photo),
+      leading: CachedNetworkImage(
 
+        imageUrl: "http://myanmarservice.org/storage/" + myFirmware.photo,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
       ),
 
-      title: Container(
-        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+    subtitle:Container(
+
+      padding:EdgeInsets.only(bottom: 10.0),
+     child: Text(myFirmware.buildnumber??'',style: TextStyle(  color: Colors.red[800],fontWeight: FontWeight.bold,fontSize: 12)),
+
+    ),
+
+  title: Container(
+        padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
         child: Text(
            myFirmware.name
 
         ),
       )
+
+  )
   );
 
 }
+
+
 
 Widget loadingWidgetMaker() {
   return Container(
