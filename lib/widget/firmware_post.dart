@@ -24,16 +24,16 @@ class FirmwareModelPage extends StatefulWidget {
 
 class _FirmwareModelPageState extends State<FirmwareModelPage> {
   GlobalKey<PaginatorState> pageGlobalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data + " Firmware"),
       ),
-      body: Paginator.listView(
+      body:  Paginator.listView(
           key: pageGlobalKey,
-          pageLoadFuture: (int page) =>
-              Provider.of<ApiService>(context).getFirmwares(page),
+          pageLoadFuture: (int page) => Provider.of<ApiService>(context).getFirmwares(page),
           pageItemsGetter: listItemsGetter,
           listItemBuilder: listItemBuilder,
           loadingWidgetBuilder: loadingWidgetMaker,
@@ -42,7 +42,11 @@ class _FirmwareModelPageState extends State<FirmwareModelPage> {
           totalItemsGetter: totalPagesGetter,
           pageErrorChecker: pageErrorChecker,
           scrollPhysics: BouncingScrollPhysics()),
+
     );
+
+
+
   }
 }
 
@@ -58,30 +62,30 @@ Widget listItemBuilder(value, int index) {
   BuiltFirmware myFirmware = value as BuiltFirmware;
   String version;
 
-  if(myFirmware.version != null){
-
+  if (myFirmware.version != null) {
     version = "Version - " + myFirmware.version;
-  }else{
-
+  } else {
     version = '';
   }
 
-  return Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: FirmwareListItem(
-          thumbnail: CachedNetworkImage(
-            imageUrl: "http://myanmarservice.org/storage/" + myFirmware.photo,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-
-        title: myFirmware.name,
-        subtitle: myFirmware.buildnumber??'',
-        version:  version,
-  ),
+  return Container(
 
 
+child: Card(
+    elevation: 5.0,
+    margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+    child: FirmwareListItem(
+      thumbnail: CachedNetworkImage(
+        imageUrl: "http://myanmarservice.org/storage/" + myFirmware.photo,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ),
+      title: myFirmware.name,
+      subtitle: myFirmware.buildnumber,
+      version: version,
+    ),
+
+),
   );
 }
 
@@ -124,7 +128,6 @@ bool pageErrorChecker(Response<BuiltFirmwares> firmwares) {
 }
 
 class _FirmwareDescription extends StatelessWidget {
-
   _FirmwareDescription({
     Key key,
     this.title,
@@ -132,6 +135,7 @@ class _FirmwareDescription extends StatelessWidget {
     this.version,
     this.publishDate,
     this.readDuration,
+    this.showBuildNumber,
   }) : super(key: key);
 
   final String title;
@@ -139,28 +143,16 @@ class _FirmwareDescription extends StatelessWidget {
   final String version;
   final String publishDate;
   final String readDuration;
-
+  bool showBuildNumber = true;
 
   @override
   Widget build(BuildContext context) {
-    bool _isVisible;
-
-    if(subtitle != null){
-
-      _isVisible == true;
-
-    }else{
-
-      _isVisible == false;
-    }
-
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+
       children: <Widget>[
         Expanded(
           flex: 2,
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -173,33 +165,30 @@ class _FirmwareDescription extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(top:10,bottom: 2.0)),
-              Text(
-                '$subtitle',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: Colors.red[800],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13
+              const Padding(padding: EdgeInsets.only(top: 10, bottom: 2.0)),
+              Visibility(
+                visible: showBuildNumber,
+                child: Text(
+                  '$subtitle',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.red[800],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13),
                 ),
               ),
-
-              const Padding(padding: EdgeInsets.only(top:10,bottom: 2.0)),
-
-
+              const Padding(padding: EdgeInsets.only(top: 10, bottom: 2.0)),
               Text(
-
-              '$version',
+                '$version',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Colors.cyan[800],
                     fontWeight: FontWeight.bold,
-                    fontSize: 13
-                ),
+                    fontSize: 13),
               ),
-              const Padding(padding: EdgeInsets.only(top:10,bottom: 2.0)),
+              const Padding(padding: EdgeInsets.only(top: 20, bottom: 2.0)),
               Icon(
                 Icons.cloud_download,
                 color: Colors.pink,
@@ -209,13 +198,10 @@ class _FirmwareDescription extends StatelessWidget {
             ],
           ),
         ),
-
       ],
     );
   }
 }
-
-
 
 class FirmwareListItem extends StatelessWidget {
   FirmwareListItem({
@@ -224,17 +210,22 @@ class FirmwareListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.version,
-
   }) : super(key: key);
 
   final Widget thumbnail;
   final String title;
   final String subtitle;
   final String version;
-
+  bool showBuildNumber;
 
   @override
   Widget build(BuildContext context) {
+    if (subtitle == null) {
+      showBuildNumber = false;
+    } else {
+      showBuildNumber = true;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: SizedBox(
@@ -253,6 +244,7 @@ class FirmwareListItem extends StatelessWidget {
                   title: title,
                   subtitle: subtitle,
                   version: version,
+                  showBuildNumber: showBuildNumber,
                 ),
               ),
             )
