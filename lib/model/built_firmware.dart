@@ -11,6 +11,8 @@ abstract class BuiltFirmware implements Built<BuiltFirmware, BuiltFirmwareBuilde
   @BuiltValueField(wireName: 'buildnumber')
   String get buildnumber;
   String get brand;
+  @nullable
+  String get version;
 
   BuiltFirmware._();
 

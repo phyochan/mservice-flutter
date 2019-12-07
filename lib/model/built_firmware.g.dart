@@ -36,6 +36,12 @@ class _$BuiltFirmwareSerializer implements StructuredSerializer<BuiltFirmware> {
         ..add(serializers.serialize(object.buildnumber,
             specifiedType: const FullType(String)));
     }
+    if (object.version != null) {
+      result
+        ..add('version')
+        ..add(serializers.serialize(object.version,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -71,6 +77,10 @@ class _$BuiltFirmwareSerializer implements StructuredSerializer<BuiltFirmware> {
           result.brand = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'version':
+          result.version = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -89,12 +99,19 @@ class _$BuiltFirmware extends BuiltFirmware {
   final String buildnumber;
   @override
   final String brand;
+  @override
+  final String version;
 
   factory _$BuiltFirmware([void Function(BuiltFirmwareBuilder) updates]) =>
       (new BuiltFirmwareBuilder()..update(updates)).build();
 
   _$BuiltFirmware._(
-      {this.id, this.name, this.photo, this.buildnumber, this.brand})
+      {this.id,
+      this.name,
+      this.photo,
+      this.buildnumber,
+      this.brand,
+      this.version})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('BuiltFirmware', 'id');
@@ -125,15 +142,18 @@ class _$BuiltFirmware extends BuiltFirmware {
         name == other.name &&
         photo == other.photo &&
         buildnumber == other.buildnumber &&
-        brand == other.brand;
+        brand == other.brand &&
+        version == other.version;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, id.hashCode), name.hashCode), photo.hashCode),
-            buildnumber.hashCode),
-        brand.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, id.hashCode), name.hashCode), photo.hashCode),
+                buildnumber.hashCode),
+            brand.hashCode),
+        version.hashCode));
   }
 
   @override
@@ -143,7 +163,8 @@ class _$BuiltFirmware extends BuiltFirmware {
           ..add('name', name)
           ..add('photo', photo)
           ..add('buildnumber', buildnumber)
-          ..add('brand', brand))
+          ..add('brand', brand)
+          ..add('version', version))
         .toString();
   }
 }
@@ -172,6 +193,10 @@ class BuiltFirmwareBuilder
   String get brand => _$this._brand;
   set brand(String brand) => _$this._brand = brand;
 
+  String _version;
+  String get version => _$this._version;
+  set version(String version) => _$this._version = version;
+
   BuiltFirmwareBuilder();
 
   BuiltFirmwareBuilder get _$this {
@@ -181,6 +206,7 @@ class BuiltFirmwareBuilder
       _photo = _$v.photo;
       _buildnumber = _$v.buildnumber;
       _brand = _$v.brand;
+      _version = _$v.version;
       _$v = null;
     }
     return this;
@@ -207,7 +233,8 @@ class BuiltFirmwareBuilder
             name: name,
             photo: photo,
             buildnumber: buildnumber,
-            brand: brand);
+            brand: brand,
+            version: version);
     replace(_$result);
     return _$result;
   }
